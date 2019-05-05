@@ -1,5 +1,6 @@
 ﻿// Задача 8 (шифрование).cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
 //
+#define _CRT_SECURE_NO_WARNINGS
 
 #include "pch.h"
 #include <iostream>
@@ -20,26 +21,112 @@ int main()
 
 	switch (choice) {
 	case  1:
+		Encrypt();
 		break;
 	case 2:
+		Decrypt();
 		break;
 	}
 }
 
 void Encrypt() {
-	string base_string;
+	// Шифрование осуществляется шифром цезаря, смещенным на четыре.
+
+	string base_string, result_string;
+	int len;
+
 	cout << "Введите строку для шифрования" << endl;
+	cin.ignore(256, '\n');
 	getline(cin, base_string);
 
+	len = base_string.size();
 
+	_asm {
+		push eax;
+		push ebx;
+		push ecx;
+		push edx;
+		push edi;
+
+		xor eax, eax;
+		xor ebx, ebx;
+		xor ecx, ecx;
+		xor edx, edx;
+		xor edi, edi;
+
+		mov ecx, len;
+		lea esi, [base_string];
+		lea edi, [result_string];
+
+		add esi, 4;
+		add edi, 4;
+
+		mov ecx, len;
+	MOVE_NEXT: lodsb;
+		add al, 4;
+		stosb;
+		loop MOVE_NEXT;
+
+	__END: pop edi;
+		pop edx;
+		pop ecx;
+		pop ebx;
+		pop eax;
+	}
+
+	const char* res = result_string.c_str();
+	for (int i = 0; i < len; i++)
+		cout << res[i];
 
 }
 
 void Decrypt() {
-	string base_string;
-	cout << "Введите для дешифрования" << endl;
+
+	string base_string, result_string;
+	int len;
+
+	cout << "Введите строку для дешифрования" << endl;
+	cin.ignore(256, '\n');
 	getline(cin, base_string);
 
+
+	len = base_string.size();
+	_asm {
+		push eax;
+		push ebx;
+		push ecx;
+		push edx;
+		push edi;
+
+		xor eax, eax;
+		xor ebx, ebx;
+		xor ecx, ecx;
+		xor edx, edx;
+		xor edi, edi;
+
+		mov ecx, len;
+		lea esi, [base_string];
+		lea edi, [result_string];
+
+		add esi, 4;
+		add edi, 4;
+
+		mov ecx, len;
+	MOVE_NEXT: lodsb;
+		sub al, 4;
+		stosb;
+		loop MOVE_NEXT;
+
+	__END: pop edi;
+		pop edx;
+		pop ecx;
+		pop ebx;
+		pop eax;
+	}
+
+	const char* res = result_string.c_str();
+	for (int i = 0; i < len; i++)
+		cout << res[i];
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
