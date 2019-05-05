@@ -1,12 +1,139 @@
-﻿// Задача 1.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
+﻿// Самостоятельная работа 1.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
 //
 
 #include "pch.h"
 #include <iostream>
+using namespace std;
+
+/*
+1) решение (найти первый седловой элемент в матрице)
+* Для каждой строки:
+		Найти минимум
+		Сравнить его со всеми элементами столбца - если он больше всех в строке - вывод
+												   иначе - ищем дальше
+2) решение (найти по седловому элементу в каждой строке/столбце)
+		Найти минимум
+		Сравнить его со всеми элементами столбца - если он больше всех в строке - вывод в массив
+												   иначе - ищем дальше
+3) решение (найти все седловые элементы)
+*/
 
 int main()
 {
-    std::cout << "Hello World!\n"; 
+	const int N = 3;											//Количество строк	
+	const int M = 4;											//Количество столбцов
+	static int A[N][M] = { {5,6,4,5},{-2,5,3,7},{8,7,-2,6} };
+	static int max, min, minIndex = 0, lineIndex = -1, colIndex = -1;
+	static char _offset = 0;
+
+	_asm {
+
+	__START:push eax;
+		push ebx;
+		push ecx;
+		push edx;
+		push edi;
+
+		xor eax, eax;
+		xor ebx, ebx;
+		xor ecx, ecx;
+		xor edx, edx;
+		xor edi, edi;
+
+
+		mov ecx, N;
+	outer_lbl: mov ax, word ptr[N];			//Записываем счетчик в ax для вычисления смещения
+		sub ax, cx;					//Получаем количество пройденных строк
+		mov ebx, M;					//Записываем второй операнд для умножения
+		mul bx;						//Получаем смещение в ax
+		mov di, ax;					//Запоминаем смещение
+		mov minIndex, 0;				//Обнеление индекса столбца минимального элемента
+
+		push ecx;
+
+		mov ecx, M;					//записываем счетчик для прохода по строке
+		mov edx, A[4 * edi];			//Инициализируем минимум - всегда первый элемент строки
+		mov min, edx;
+		dec ecx;
+
+		jmp find_min_lbl;
+
+
+	outer_loop_lbl_transit: xor edi, edi;
+		jmp outer_lbl;
+
+
+	find_min_lbl: inc edi;			//Переходим к следующему элементу строки 
+		mov eax, A[4 * edi];	//Перемещаем новый элемент в регистр для сравнения
+		cmp eax, min;			//Сравниваем элементы
+		jg not_min;			//Если элемент не максимальный - переходим к соотв. метке
+		mov min, eax;			//Иначе - перезапоминаем минимум
+
+		push ebx;
+		mov ebx, M;
+		sub ebx, ecx;
+
+		call get_column_index;	//Вычисление индекса столбца минимального элемента
+		mov minIndex, ebx;		//Запоминаем индекс столбца
+
+		pop ebx;
+	not_min: loop find_min_lbl;
+
+		mov ecx, N;							//Заново инициализируем счетчик для прохода по столбцу
+		mov edi, minIndex;				//Инициализация регистра-индекса значением столбца, где расположен минимальный элемент
+
+
+	find_max_lbl: mov eax, A[4 * edi];	//Записываем минимум в регистр для дальнейшего сравнения
+		cmp eax, min;			//Сравнение
+		jg if_more;				//Если найден новый максимальный элемент
+		add edi, M;				//Увеличиваем счетчик для перехода к след. элементу 
+		loop find_max_lbl;		//Если элемент не найден - продолжаем цикл
+
+		pop ecx;
+		mov eax, N;				//Записываем счетчик в ax для вычисления смещения
+		sub eax, ecx;					//Получаем количество пройденных строк
+		mov lineIndex, eax;		//Запоминаем индекс элемента
+
+		mov eax, minIndex;
+		mov colIndex, eax;
+
+		jmp outer_loop_lbl;
+
+	if_more: pop ecx;
+		jmp outer_loop_lbl;
+	outer_loop_lbl: dec ecx;
+		cmp ecx, 0;
+		jg outer_loop_lbl_transit;
+		jmp _end;
+
+	get_column_index: push eax;
+		push ecx;
+		push edx;
+
+		xor eax, eax;
+		xor ecx, ecx;
+		xor edx, edx;
+
+		mov ax, bx;
+		mov bx, word ptr[M];
+
+		div bx;
+		mov bx, dx;
+
+		pop eax;
+		pop ecx;
+		pop edx;
+		ret;
+
+	_end: pop edi;
+		pop edx;
+		pop ecx;
+		pop ebx;
+		pop eax;
+	}
+
+	cout << lineIndex << endl;
+	cout << colIndex << endl;
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
