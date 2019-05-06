@@ -38,8 +38,8 @@ int main()
 		xor edx, edx;
 		xor edi, edi;
 
-		mov ecx, l;				//Запоминаем длину строки
-		mov edi, 1;				//Степень 10
+		mov ecx, l;				// Запоминаем длину строки
+		mov edi, 1;				// Степень 10
 
 		//Отрицательное число или нет
 		mov al, MINUS;
@@ -48,16 +48,16 @@ int main()
 		mov is_negative, 1;
 
 		//Перевод в 10СС
-	TO_10SS: mov al, stroka[ecx - 1];	//Получение последней цифры-символа строки
-		sub al, 48;					//Получение последней цифры-цифры
-		mul edi;					//Умножение на 10 в степени
-		add number, eax;			//Добавление к числу в десятичной СС
+	TO_10SS: mov al, stroka[ecx - 1];	// Получение последней цифры-символа строки
+		sub al, 48;						// Получение последней цифры-цифры
+		mul edi;						// Умножение на 10 в степени
+		add number, eax;				// Добавление к числу в десятичной СС
 
-		mov eax, 10;				//Увеличение степени 10
+		mov eax, 10;					// Увеличение степени 10
 		mul edi;
 		mov edi, eax;
 
-		xor eax, eax;				//Обнуление цифры
+		xor eax, eax;					// Обнуление цифры
 		dec ecx;
 		mov bl, is_negative;
 		cmp ecx, ebx
@@ -69,27 +69,27 @@ int main()
 		mov is_word, 1;
 
 	IS_NEGATIVE:mov al, 1;
-		cmp al, is_negative;	//Проверка отрицательное число или нет
-		jne INIT;							//Если число не отрицательное, то сразу же переходим к переписыванию бит
+		cmp al, is_negative;				// Проверка отрицательное число или нет
+		jne INIT;							// Если число не отрицательное, то сразу же переходим к переписыванию бит
 		xor edi, edi;
 		mov ecx, 16;
-	LOOP_IS_NEGATIVE: btc number, edi;		//Цикл перевода в отрицательное число в памяти
+	LOOP_IS_NEGATIVE: btc number, edi;		// Цикл перевода в отрицательное число в памяти
 		inc edi;
 		loop LOOP_IS_NEGATIVE;
 		inc number;
 
 	INIT: xor edi, edi;
-		mov edi, 16;				//По умолчанию считаем, что у нас двойное слово. Максимум - 15 цифр
+		mov edi, 16;				// По умолчанию считаем, что у нас двойное слово. Максимум - 15 цифр
 		mov ebx, 2;
 	TO_2SS:
 		xor edx, edx;
 		mov eax, number;
-		div ebx;					//Разделили число на 2
-		mov resDW[edi - 1], dl;		//Записали остаток
-		dec edi;					//Сдвинули индекс
-		mov number, eax;			//Запомнили частное от деления
+		div ebx;					// Разделили число на 2
+		mov resDW[edi - 1], dl;		// Записали остаток
+		dec edi;					// Сдвинули индекс
+		mov number, eax;			// Запомнили частное от деления
 		inc count;
-		cmp eax, 0;					//Пока в eax что-то есть - продолжаем делить
+		cmp eax, 0;					// Пока в eax что-то есть - продолжаем делить
 		jne TO_2SS;
 
 		mov al, is_word;

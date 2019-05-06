@@ -14,8 +14,8 @@ int main()
 	static int lenA, lenB, difference, count = 4;
 	static bool is_negative, is_CF;
 
-	setlocale(LC_ALL, "RUS");			// Установить Русский язык в консоли
-	printf("Введите первое число:\n");	// Ввод чисел 
+	setlocale(LC_ALL, "RUS");				// Установить Русский язык в консоли
+	printf("Введите первое число:\n");		// Ввод чисел 
 	getline(cin, A);
 	printf("Введите второе число: \n");
 	getline(cin, B);
@@ -23,7 +23,7 @@ int main()
 	if (A.size() < B.size())				// Длина числа А всегда больше длины числа В
 		swap(A, B);
 
-	lenA = A.size();					// Запоминаем длины чисел
+	lenA = A.size();						// Запоминаем длины чисел
 	lenB = B.size();
 
 	__asm {
@@ -56,7 +56,7 @@ int main()
 		clc;
 		mov ecx, lenB;
 	SUM_BOTH: add ecx, difference;
-		dec ecx;								//Для удобства адресации
+		dec ecx;						// Для удобства адресации
 		mov al, [esi + ecx];			// Загрузили цифру первого числа
 		sub al, 48;
 		aaa;
@@ -65,7 +65,7 @@ int main()
 		mov is_CF, 0;
 
 		sub ecx, difference;
-		mov bl, [edi + ecx];			//Загрузили цифру второго числа
+		mov bl, [edi + ecx];			// Загрузили цифру второго числа
 		sub bl, 48;
 		aaa;
 
@@ -76,7 +76,7 @@ int main()
 
 	OUTPUT: add al, 48;
 		mov ebx, count;
-		mov[result + ebx], al;			//Запись результата
+		mov[result + ebx], al;			// Запись результата
 		inc count;
 		inc ecx;
 		loop SUM_BOTH;
@@ -86,14 +86,14 @@ int main()
 		mov ecx, difference;
 		add al, is_CF;
 		cmp al, 0;
-		jne IS_CF;					// Осталась ли единица
-		cmp difference, 0;			//Есть ли разница между числами в длине
+		jne IS_CF;						// Осталась ли единица
+		cmp difference, 0;				// Есть ли разница между числами в длине
 		je _REVERSE_INIT;
 		mov ecx, difference;
 	LOOP_LBL:dec ecx;
 		mov al, [esi + ecx];
 		mov ebx, count;
-		mov[result + ebx], al;			//Запись результата
+		mov[result + ebx], al;			// Запись результата
 		inc count;
 		inc ecx;
 		loop LOOP_LBL;
@@ -107,27 +107,41 @@ int main()
 		jmp _REVERSE_INIT;
 
 		mov ecx, difference;
-	LOOP_LBL_DIFF: dec ecx;
+	LOOP_LBL_DIFF: mov al, 0;
+		dec ecx;
 		mov bl, [esi + ecx];
 		add al, bl;
-		mov ebx, count;
+		add al, is_CF;
+		aaa;
+		jnc NO_OVERFLOW;
+		mov is_CF, 1;
+		jmp _OUTPUT_2;
+	NO_OVERFLOW: mov is_CF, 0;
+	_OUTPUT_2:mov ebx, count;
+		add al, 48;
 		mov[result + ebx], al;			//Запись результата
 		inc count;
 		inc ecx;
 		xor eax, eax;
 		loop LOOP_LBL_DIFF;
+		cmp is_CF, 1;
+		jne _REVERSE_INIT;
+		mov ebx, count;
+		add al, 48;
+		mov[result + ebx], 49;
+		inc count;
 
-	_REVERSE_INIT:		
+	_REVERSE_INIT:
 		xor eax, eax;
-		add eax,4;
+		add eax, 4;
 		mov ecx, count;
 	LOOP_LBL_REVERSE: dec ecx;
-		mov bl, [result+ecx];
-		mov [reverse_result+eax], bl;
+		mov bl, [result + ecx];
+		mov[reverse_result + eax], bl;
 		inc eax;
 		inc ecx;
 		dec ecx;
-		cmp ecx,4;
+		cmp ecx, 4;
 		jne LOOP_LBL_REVERSE;
 
 		pop edi;
@@ -135,7 +149,7 @@ int main()
 		pop ecx;
 		pop ebx;
 		pop eax;
-	}	
+	}
 	printf(reverse_result.c_str());
 }
 
