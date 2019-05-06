@@ -23,6 +23,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Задача 5 (норма�
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Задача 8 (шифрование)", "Задача 8 (шифрование)\Задача 8 (шифрование).vcxproj", "{E693F50D-C406-44B6-95B4-A578A7E1E4AF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Задача 9", "Задача 9\Задача 9.vcxproj", "{C12FA0EB-4914-46D7-A052-5DE8F87DFD67}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -111,6 +113,14 @@ Global
 		{E693F50D-C406-44B6-95B4-A578A7E1E4AF}.Release|x64.Build.0 = Release|x64
 		{E693F50D-C406-44B6-95B4-A578A7E1E4AF}.Release|x86.ActiveCfg = Release|Win32
 		{E693F50D-C406-44B6-95B4-A578A7E1E4AF}.Release|x86.Build.0 = Release|Win32
+		{C12FA0EB-4914-46D7-A052-5DE8F87DFD67}.Debug|x64.ActiveCfg = Debug|x64
+		{C12FA0EB-4914-46D7-A052-5DE8F87DFD67}.Debug|x64.Build.0 = Debug|x64
+		{C12FA0EB-4914-46D7-A052-5DE8F87DFD67}.Debug|x86.ActiveCfg = Debug|Win32
+		{C12FA0EB-4914-46D7-A052-5DE8F87DFD67}.Debug|x86.Build.0 = Debug|Win32
+		{C12FA0EB-4914-46D7-A052-5DE8F87DFD67}.Release|x64.ActiveCfg = Release|x64
+		{C12FA0EB-4914-46D7-A052-5DE8F87DFD67}.Release|x64.Build.0 = Release|x64
+		{C12FA0EB-4914-46D7-A052-5DE8F87DFD67}.Release|x86.ActiveCfg = Release|Win32
+		{C12FA0EB-4914-46D7-A052-5DE8F87DFD67}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
