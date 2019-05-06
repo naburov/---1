@@ -84,14 +84,14 @@ int main()
 		jne B_LEN_LOOP;
 		mov lenB, edi;
 
-		mov eax, lenA;				//Записали в регистр длину первого числа
-		cmp is_first_negative, 1;	//Отрицательные ли числа
-		je CMP_NEGATIVE;			//Если числа отрицательные - сравниваем соответственно
-		cmp eax, lenB;				//Сравнение длин, если числа положительные
+		mov eax, lenA;				// Записали в регистр длину первого числа
+		cmp is_first_negative, 1;	// Отрицательные ли числа
+		je CMP_NEGATIVE;			// Если числа отрицательные - сравниваем соответственно
+		cmp eax, lenB;				// Сравнение длин, если числа положительные
 		je CMP_EQUAL_LEN;
 		jg FIRST_MORE;
 		jmp SECOND_MORE;
-	CMP_NEGATIVE: cmp eax, lenB;	//Сравнение длин, если оба числа отрицательные
+	CMP_NEGATIVE: cmp eax, lenB;	// Сравнение длин, если оба числа отрицательные
 		je CMP_EQUAL_LEN;
 		jg SECOND_MORE;
 		jmp FIRST_MORE;

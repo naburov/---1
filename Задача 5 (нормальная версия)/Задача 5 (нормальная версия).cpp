@@ -56,7 +56,7 @@ int main()
 		clc;
 		mov ecx, lenB;
 	SUB_BOTH: add ecx, difference;
-		dec ecx;						//Для удобства адресации
+		dec ecx;						// Для удобства адресации
 		mov al, [esi + ecx];			// Загрузили цифру первого числа
 		sub al, 48;
 		aaa;
@@ -66,7 +66,7 @@ int main()
 		mov is_CF, 0;
 
 	_SUB:sub ecx, difference;
-		mov bl, [edi + ecx];			//Загрузили цифру второго числа
+		mov bl, [edi + ecx];			// Загрузили цифру второго числа
 		sub bl, 48;
 		aaa;
 
@@ -77,7 +77,7 @@ int main()
 
 	OUTPUT: add al, 48;
 		mov ebx, count;
-		mov[result + ebx], al;			//Запись результата
+		mov[result + ebx], al;			// Запись результата
 		inc count;
 		inc ecx;
 		loop SUB_BOTH;
@@ -96,7 +96,7 @@ int main()
 	NO_OVERFLOW: mov is_CF, 0;
 	_OUTPUT_2:add al, 48;
 		mov ebx, count;
-		mov[result + ebx], al;			//Запись результата
+		mov[result + ebx], al;			// Запись результата
 		inc count;
 		cmp is_CF, 1;
 		je LOOP_SUB_IS_CF;
