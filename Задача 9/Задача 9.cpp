@@ -152,10 +152,10 @@ void _intersect() {
 		push ecx;
 		push ebx;
 		mov ebx, count;
-		mov eax, [first + 4 * ebx];	// Запомнили символ, который ищем
+		mov eax, [first + 4 * ebx];		// Запомнили символ, который ищем
 		pop ebx;
 		lea edi, [second];				// Загрузили цепочку, где ищем символ
-		mov ecx, M;					// Установили счетчик (кол-во элементов во второй цепочке массиве)
+		mov ecx, M;						// Установили счетчик (кол-во элементов во второй цепочке массиве)
 		repne scasd;
 		jne NEXT;
 		mov ebx, added_count;
